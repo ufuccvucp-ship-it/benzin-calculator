@@ -1,0 +1,27 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Бензиновый калькулятор</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0a84ff">
+<style>
+body{font-family:-apple-system,sans-serif;background:#f2f2f7;padding:20px;max-width:430px;margin:auto}
+.card{background:#fff;border-radius:18px;padding:16px;margin:18px 0;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+input,button{width:100%;padding:12px;margin:8px 0;border-radius:12px;font-size:17px;box-sizing:border-box}
+button{background:#0a84ff;color:#fff;border:none;font-weight:bold}
+.r{font-size:22px;font-weight:bold;text-align:center;color:#0a84ff}
+</style></head><body>
+<h1>⛽ Бензиновый калькулятор</h1>
+<div class='card'><h2>Осталось бензина</h2>
+<input id='b' type='number' placeholder='Запас хода, км'>
+<input id='c1' type='number' step='0.1' placeholder='Средний расход, л/100 км'>
+<button onclick='f1()'>Рассчитать</button><div id='o1' class='r'></div></div>
+<div class='card'><h2>Бензин на поездку</h2>
+<input id='e' type='number' placeholder='Расстояние, км'>
+<input id='c2' type='number' step='0.1' placeholder='Средний расход, л/100 км'>
+<button onclick='f2()'>Рассчитать</button><div id='o2' class='r'></div></div>
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js');}
+let s=localStorage.getItem('fuel');if(s){c1.value=s;c2.value=s;}
+function save(v){localStorage.setItem('fuel',v);c1.value=v;c2.value=v;}
+function f1(){let B=+b.value,C=+c1.value;if(!B&&!C){alert('Заполните поля');return;}save(C);o1.textContent=((B*C/100).toFixed(1)+' л');}
+function f2(){let E=+e.value,C=+c2.value;if(!E&&!C){alert('Заполните поля');return;}save(C);o2.textContent=((C*E/100).toFixed(1)+' л');}
+</script></body></html>
