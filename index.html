@@ -1,27 +1,38 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Бензиновый калькулятор</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0a84ff">
+<!doctype html><html lang='ru'><head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>MaryFuel</title>
+<link rel='manifest' href='manifest.json'>
+<meta name='theme-color' content='#0a84ff'>
 <style>
-body{font-family:-apple-system,sans-serif;background:#f2f2f7;padding:20px;max-width:430px;margin:auto}
-.card{background:#fff;border-radius:18px;padding:16px;margin:18px 0;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-input,button{width:100%;padding:12px;margin:8px 0;border-radius:12px;font-size:17px;box-sizing:border-box}
-button{background:#0a84ff;color:#fff;border:none;font-weight:bold}
-.r{font-size:22px;font-weight:bold;text-align:center;color:#0a84ff}
+body{font-family:-apple-system,sans-serif;background:#f2f2f7;max-width:460px;margin:auto;padding:16px}
+.card{background:#fff;border-radius:18px;padding:16px;margin:16px 0;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+h1{text-align:center}input,button{width:100%;padding:12px;margin:8px 0;border-radius:12px;font-size:17px;box-sizing:border-box}
+button{background:#0a84ff;color:#fff;border:none;font-weight:700}.r{font-size:22px;font-weight:700;color:#0a84ff;text-align:center}
 </style></head><body>
-<h1>⛽ Бензиновый калькулятор</h1>
-<div class='card'><h2>Осталось бензина</h2>
-<input id='b' type='number' placeholder='Запас хода, км'>
-<input id='c1' type='number' step='0.1' placeholder='Средний расход, л/100 км'>
-<button onclick='f1()'>Рассчитать</button><div id='o1' class='r'></div></div>
-<div class='card'><h2>Бензин на поездку</h2>
-<input id='e' type='number' placeholder='Расстояние, км'>
-<input id='c2' type='number' step='0.1' placeholder='Средний расход, л/100 км'>
-<button onclick='f2()'>Рассчитать</button><div id='o2' class='r'></div></div>
+<h1>⛽ MaryFuel</h1>
+
+<div class='card'><h2>Остаток топлива</h2>
+<input id=b placeholder='Запас хода, км' type=number>
+<input id=c1 placeholder='Расход, л/100 км' type=number step=0.1>
+<button onclick='left()'>Рассчитать</button><div id=o1 class=r></div></div>
+
+<div class='card'><h2>Топливо на поездку</h2>
+<input id=d placeholder='Расстояние, км' type=number>
+<input id=c2 placeholder='Расход, л/100 км' type=number step=0.1>
+<button onclick='need()'>Рассчитать</button><div id=o2 class=r></div></div>
+
+<div class='card'><h2>Стоимость поездки</h2>
+<input id=km placeholder='Расстояние, км' type=number>
+<input id=cons placeholder='Расход, л/100 км' type=number step=0.1>
+<input id=price placeholder='Цена бензина за литр' type=number step=0.01>
+<button onclick='cost()'>Рассчитать</button><div id=o3 class=r></div></div>
+
 <script>
-if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js');}
-let s=localStorage.getItem('fuel');if(s){c1.value=s;c2.value=s;}
-function save(v){localStorage.setItem('fuel',v);c1.value=v;c2.value=v;}
-function f1(){let B=+b.value,C=+c1.value;if(!B&&!C){alert('Заполните поля');return;}save(C);o1.textContent=((B*C/100).toFixed(1)+' л');}
-function f2(){let E=+e.value,C=+c2.value;if(!E&&!C){alert('Заполните поля');return;}save(C);o2.textContent=((C*E/100).toFixed(1)+' л');}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('service-worker.js')}
+let f=localStorage.fuel,p=localStorage.price;
+if(f){c1.value=f;c2.value=f;cons.value=f} if(p) price.value=p;
+function save(c,pr){localStorage.fuel=c;if(pr)localStorage.price=pr;}
+function left(){let r=+b.value,c=+c1.value;save(c);o1.innerHTML=(r*c/100).toFixed(1)+' л';}
+function need(){let km=+d.value,c=+c2.value;save(c);o2.innerHTML=(km*c/100).toFixed(1)+' л';}
+function cost(){let kmv=+km.value,c=+cons.value,pr=+price.value;save(c,pr);let l=kmv*c/100;o3.innerHTML=l.toFixed(1)+' л<br>'+ (l*pr).toFixed(2)+' ₽';}
 </script></body></html>
